@@ -14,9 +14,21 @@ class PrinterResponse:
         self.port = port
         self.page = page
 
+    def get_address(self):
+        try:
+            address = socket.gethostbyname(socket.gethostname())
+            # On my system, this always gives me 127.0.0.1. Hence...
+        except:
+            address = ''
+        if not address or address.startswith('127.'):
+            # ...the hard way.
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(('4.2.2.1', 0))
+            address = s.getsockname()[0]
+        return address
+
     def send(self):
-        hostname = socket.gethostname()
-        printer = socket.gethostbyname(hostname)
+        printer = self.get_address()
 
         print "printer IP: %s" % printer
 
@@ -30,9 +42,9 @@ class PrinterResponse:
 
         response = connection.getresponse()
         if response.status == httplib.OK:
-            print response.read(), response.reason
+            print response.read(), "\nResponse", response.reason
         else:
-            print response.status, response.reason
+            print response.status, "\nResponse", response.reason
 
         connection.close()
 
