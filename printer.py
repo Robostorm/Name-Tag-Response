@@ -34,7 +34,11 @@ class PrinterResponse:
 
         print self.ip, " : ", self.port, " : ", self.page
         connection = httplib.HTTPConnection(self.ip, self.port)
-        connection.connect()
+        try:
+            connection.connect()
+        except Exception:
+            print("Could not connect\n", Exception.message)
+            return
 
         params = urllib.urlencode({'printer': printer})
         headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
@@ -47,9 +51,3 @@ class PrinterResponse:
             print response.status, "\nResponse", response.reason
 
         connection.close()
-
-    def asyncSend(self):
-        try:
-            thread.start_new_thread(self.send, ())
-        except Exception:
-            print "Error: unable to start thread"

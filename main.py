@@ -2,25 +2,37 @@ import printer
 import RPi.GPIO as GPIO
 import os
 import sys
+import time
+import datetime
 
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 
-buttonPin = 7
-shutDown = 8
-ip = 'localhost'
-port = 8080
-page = '/ntap/response'
+ip = '192.168.1.22'
+port = 80
+page = '/NameTag/ntap/response'
 
-GPIO.setup(buttonPin, GPIO.IN, pull_up_up = GPIO.PUD_UP)
-GPIO.setup(shutDown, GPIO.IN, pull_up_up = GPIO.PUD_UP)
+buttonPin = 24
+shutDown = 26
+pressed = False
+
+GPIO.setup(buttonPin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(shutDown, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 response = printer.PrinterResponse(ip, port, page)
 
 while True:
-    if GPIO.input(buttonPin):
+    if not GPIO.input(buttonPin) and not pressed:
+        print(datetime.datetime.now().strftime("\n%I:%M:%S%p on %B %d, %Y"))
+        pressed = True
         print("Done Printing")
         response.send()
-    if GPIO.input(shutDown):
-        print("Shutdown")
-        os.system("shutdown now -h")
-        sys.exit(0)
+        time.sleep(1)
+    # elif not GPIO.input(shutDown) and not pressed:
+    #     pressed = True
+    #     print("Shutdown")
+    #     os.system("shutdown now -h")
+    #     sys.exit(0)
+    elif GPIO.input(buttonPin)and pressed:
+        pressed = False
+        time.sleep(1)
+    #print "Button: ", GPIO.input(buttonPin), "Pressed: ", pressed
