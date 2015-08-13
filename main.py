@@ -51,6 +51,7 @@ def done():
 # Called when halt button is pressed
 def halt():
 	log("Halt")
+	os.system("halt")
 
 if GPIO.RPI_REVISION >= 3:
 	donePin = pDonePin
