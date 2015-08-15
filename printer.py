@@ -49,5 +49,4 @@ class PrinterResponse:
             print response.read(), "\nResponse", response.reason
         else:
             print response.status, "\nResponse", response.reason
-
         connection.close()
