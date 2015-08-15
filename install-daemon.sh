@@ -6,4 +6,5 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 cp ntrs /etc/init.d/ntrs
+chmod +x /etc/init.d/ntrs
 update-rc.d ntrs defaults
