@@ -1,9 +1,9 @@
-import buttons, sys
+import main, sys
 from daemon import Daemon
 
 class NTDaemon(Daemon):
     def run(self):
-        buttons.start()
+        main.start()
 
 if __name__ == '__main__':
     daemon = NTDaemon('/tmp/ntdaemon.pid', stdout='/var/log/ntrout.log', stderr='/var/log/ntrerr.log')

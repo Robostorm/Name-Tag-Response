@@ -13,9 +13,11 @@ def start():
 
     GPIO.setmode(GPIO.BOARD)
 
-    ip = '192.168.1.22'
+    ip = ''
+    # ip = '192.168.1.22'
     port = 80
     page = '/NameTag/ntap/response'
+    hostname = 'robostorm-toshiba.local'
 
     #Pre B+
     bDonePin = 24
@@ -48,7 +50,7 @@ def start():
     # Called when done button is pressed
     def done():
         log("Done")
-    #response.send()
+        response.send()
 
     # Called when halt button is pressed
     def halt():
@@ -61,6 +63,9 @@ def start():
         print("B+ or Pi 2")
     else:
         print("Pi 1 not +")
+
+    if ip == '':
+        ip = socket.gethostbyname(hostname)
 
     donePressed = False
     haltPressed = False
