@@ -12,6 +12,7 @@ def start():
     # ============
 
     GPIO.setmode(GPIO.BOARD)
+    GPIO.setwarnings(False)
 
     ip = ''
     # ip = '192.168.1.22'
